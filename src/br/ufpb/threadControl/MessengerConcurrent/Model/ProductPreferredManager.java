@@ -1,0 +1,51 @@
+package br.ufpb.threadControl.MessengerConcurrent.Model;
+
+import java.util.HashMap;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.logging.Logger;
+
+/**
+ * Manager products preferred of Customer.
+ * 
+ * @author Diego Sousa - www.diegosousa.com
+ * @version 0.0.1 Copyright (C) 2011 Diego Sousa de Azevedo
+ */
+
+public class ProductPreferredManager {
+
+	private HashMap<Client, LinkedBlockingQueue<Product>> listOfAllPreferences = new HashMap<Client, LinkedBlockingQueue<Product>>();
+	private static ProductPreferredManager productPreferredManager;
+	private Logger logger = Logger.getLogger("br.ufpb.threadControl.MessageManager.Controller.ProductPreferredManager");
+
+	/*
+	 * Singleton
+	 */
+
+	public static ProductPreferredManager getInstance() {
+		if (productPreferredManager.equals(null)) {
+			productPreferredManager = new ProductPreferredManager();
+			return productPreferredManager;
+		} else {
+			return productPreferredManager;
+		}
+	}
+
+	private ProductPreferredManager() {
+	}
+
+	public void addPreferencesClient(Client client) {
+		listOfAllPreferences.put(client, client.getListPreference());
+		logger.info("Client preferences: " + client.getName()
+				+ "added successfully");
+	}
+
+	public void RemoverPreferencesClient(Client client) {
+		listOfAllPreferences.remove(client);
+		logger.info("Client preferences: " + client.getName()
+				+ "removed successfully");
+	}
+
+	public HashMap<Client, LinkedBlockingQueue<Product>> getListPreference() {
+		return listOfAllPreferences;
+	}
+}
