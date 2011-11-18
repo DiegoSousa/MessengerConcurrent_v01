@@ -13,18 +13,21 @@ import java.util.logging.Logger;
 
 public class PromotionManager {
 
-	private LinkedBlockingQueue<Promotion> listPromotion = new LinkedBlockingQueue<Promotion>();
-	private Logger logger = Logger.getLogger("br.ufpb.threadControl.MessageManager.Model.PromotionManager"); 
+	private LinkedBlockingQueue<Promotion> listPromotion;
+	private Logger logger; 
 	private static PromotionManager promotionManager;
 	
-	private PromotionManager() {}
+	private PromotionManager() {
+		this.listPromotion = new LinkedBlockingQueue<Promotion>();
+		this.logger = Logger.getLogger("br.ufpb.threadControl.MessageManager.Model.PromotionManager");		
+	}
 	
 	/*
 	 * Singleton
 	 */		
 	
 	public static PromotionManager getIntance(){
-		if(promotionManager.equals(null)){
+		if(promotionManager==null){
 			promotionManager = new PromotionManager();
 			return promotionManager;
 		}else{
@@ -36,7 +39,7 @@ public class PromotionManager {
 	public void addPromotion(Promotion promotion) {
 		try {
 			listPromotion.put(promotion);
-			logger.info("Created promotion successfully!");
+			logger.info("Created promotion successfully! Promotion Code: "+ promotion.getPromotionCode());
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -47,19 +50,18 @@ public class PromotionManager {
 		for (Promotion promotion : listPromotion) {
 			if (promotion.getPromotionCode() == promotionAux.getPromotionCode()) {
 				listPromotion.remove(promotion);
-				logger.info("Promotion successfully Removed !");
+				logger.info("Promotion successfully Removed! Promotion Code: "+ promotion.getPromotionCode());
 				return promotionAux;
 			}
 		}
-		logger.info("Error adding promotion: Promotion is not added!");
+		logger.info("Error removing promotion: Promotion is not added!");
 		return null;
 	}
 
 	public Promotion locatePromotion(double promotionCode) {
 
 		for (Promotion promotion : listPromotion) {
-			if (promotion.getPromotionCode() == promotionCode) {
-				logger.info("Promotion successfully added !");
+			if (promotion.getPromotionCode() == promotionCode) {				
 				return promotion;
 			}
 		}

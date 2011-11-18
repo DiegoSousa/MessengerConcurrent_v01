@@ -15,21 +15,25 @@ import br.ufpb.threadControl.MessengerConcurrent.Model.Client;
 
 public class CheckerBirthday implements Runnable {
 
-	private Fachada fachada = Fachada.getInstance();
+	private Facade facade;
 	private LinkedBlockingQueue<Client> listClient;
 	private LinkedBlockingQueue<Client> listOfBirthdaysOfTheDay;
-	private Calendar calendar = Calendar.getInstance();
+	private Calendar calendar;
 	private int day;
 	private int month;
+	private boolean terminate;
 
 	/*
 	 * constructor for manual search of birthdays 
 	 */
 		
 	public CheckerBirthday(int day, int month) {
-		this.listOfBirthdaysOfTheDay = new LinkedBlockingQueue<Client>();
+		this.listOfBirthdaysOfTheDay = new LinkedBlockingQueue<Client>();		
 		this.day = day;
 		this.month = month;
+		this.calendar = Calendar.getInstance();
+		this.terminate= false;
+		this.facade = Facade.getInstance();
 	}
 	
 	/*
@@ -40,11 +44,14 @@ public class CheckerBirthday implements Runnable {
 		this.listOfBirthdaysOfTheDay = new LinkedBlockingQueue<Client>();
 		this.day = calendar.get(GregorianCalendar.DATE);
 		this.month = ((calendar.get(GregorianCalendar.MONTH)) + 1);
+		this.calendar = Calendar.getInstance();
+		this.terminate= false;
+		this.facade = Facade.getInstance();
 	}
 
 	@Override
 	public void run() {
-		listClient = fachada.getListClient();
+		listClient = facade.getListClient();
 		for (Client client : listClient) {
 			if (client.getBirthday() == day
 					&& client.getMonthOfBirth() == month) {
@@ -54,9 +61,14 @@ public class CheckerBirthday implements Runnable {
 					e.printStackTrace();
 				}
 			}
-		}
+		}		
+		terminate = true;
 	}
-
+	
+	public boolean getBirthdayCompleteList(){
+		return terminate;		
+	}
+	
 	public LinkedBlockingQueue<Client> getListClientOfBirthdays() {
 		return listOfBirthdaysOfTheDay;
 	}

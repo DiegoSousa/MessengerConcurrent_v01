@@ -15,10 +15,9 @@ public class Promotion {
 	private double discountedPrice;
 	private double promotionCode;
 
-	public Promotion(Product product, double currentPrice,
-			double discountedPrice, double promotionCode) {
+	public Promotion(Product product, double discountedPrice, double promotionCode) {
 		this.product = product;
-		this.currentPrice = currentPrice;
+		this.currentPrice = product.getPrice();
 		this.discountedPrice = discountedPrice;
 		this.promotionCode = promotionCode;
 	}

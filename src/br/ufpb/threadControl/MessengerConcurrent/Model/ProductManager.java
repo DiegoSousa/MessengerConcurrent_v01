@@ -12,18 +12,21 @@ import java.util.logging.Logger;
 
 public class ProductManager {
 
-	private LinkedBlockingQueue<Product> listProduct = new LinkedBlockingQueue<Product>();	
-	private Logger logger = Logger.getLogger("br.ufpb.threadControl.birthdayMessage.Model.ProductManager");
+	private LinkedBlockingQueue<Product> listProduct;	
+	private Logger logger;
 	private static ProductManager productManager;
 	
-	private ProductManager() {}
+	private ProductManager() {
+		this.listProduct = new LinkedBlockingQueue<Product>();
+		this.logger = Logger.getLogger("br.ufpb.threadControl.birthdayMessage.Model.ProductManager");
+	}
 	
 	/*
 	 * Singleton
 	 */
 	
 	public static ProductManager getIntance(){
-		if(productManager.equals(null)){
+		if(productManager == null){
 			productManager = new ProductManager();
 			return productManager;
 		}else{

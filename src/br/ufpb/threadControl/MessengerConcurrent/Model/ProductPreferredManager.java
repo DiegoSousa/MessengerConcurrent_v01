@@ -13,25 +13,28 @@ import java.util.logging.Logger;
 
 public class ProductPreferredManager {
 
-	private HashMap<Client, LinkedBlockingQueue<Product>> listOfAllPreferences = new HashMap<Client, LinkedBlockingQueue<Product>>();
+	private HashMap<Client, LinkedBlockingQueue<Product>> listOfAllPreferences;
 	private static ProductPreferredManager productPreferredManager;
-	private Logger logger = Logger.getLogger("br.ufpb.threadControl.MessageManager.Controller.ProductPreferredManager");
+	private Logger logger;
 
+	
+	private ProductPreferredManager() {
+		this.listOfAllPreferences = new HashMap<Client, LinkedBlockingQueue<Product>>();
+		this.logger = Logger.getLogger("br.ufpb.threadControl.MessageManager.Controller.ProductPreferredManager");		
+	}	
+	
 	/*
 	 * Singleton
 	 */
 
 	public static ProductPreferredManager getInstance() {
-		if (productPreferredManager.equals(null)) {
+		if (productPreferredManager == null){
 			productPreferredManager = new ProductPreferredManager();
 			return productPreferredManager;
 		} else {
 			return productPreferredManager;
 		}
-	}
-
-	private ProductPreferredManager() {
-	}
+	}	
 
 	public void addPreferencesClient(Client client) {
 		listOfAllPreferences.put(client, client.getListPreference());

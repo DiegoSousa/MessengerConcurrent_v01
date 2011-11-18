@@ -13,18 +13,21 @@ import java.util.logging.Logger;
 
 public class ClientManager {
 
-	private LinkedBlockingQueue<Client> listClient = new LinkedBlockingQueue<Client>();;
-	private Logger logger = Logger.getLogger("br.ufpb.threadControl.birthdayMessage.Model.ClientManager");
+	private LinkedBlockingQueue<Client> listClient;
+	private Logger logger;
 	private static ClientManager clientManager;
 	
-	private ClientManager() {}
+	private ClientManager() {
+		this.listClient = new LinkedBlockingQueue<Client>();
+		this.logger = Logger.getLogger("br.ufpb.threadControl.birthdayMessage.Model.ClientManager");
+	}
 	
 	/*
 	 * Singleton
 	 */
 	
 	public static ClientManager getInstance(){
-		if(clientManager.equals(null)){
+		if(clientManager == null){
 			clientManager = new ClientManager();
 			return clientManager;			
 		}else{
@@ -79,7 +82,7 @@ public class ClientManager {
 
 		for (Client client : listClient) {
 			if (client.getMail().equals(mail)) {
-				logger.info("Client: "+ client.getName() + "found!");
+				logger.info("Client: "+ client.getName() + " found!");
 				return client;
 			}
 		}
