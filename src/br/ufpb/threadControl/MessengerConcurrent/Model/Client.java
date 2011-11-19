@@ -82,7 +82,11 @@ public class Client {
 	}
 
 	public void addListPreference(Product product) {
-		listProductPreferred.add(product);
+		try {
+			listProductPreferred.put(product);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public LinkedBlockingQueue<Product> getListPreference() {
