@@ -39,6 +39,7 @@ public class PromotionManager {
 	public void addPromotion(Promotion promotion) {
 		try {
 			listPromotion.put(promotion);
+			
 			logger.info("Created promotion successfully! Promotion Code: "+ promotion.getPromotionCode());
 		} catch (InterruptedException e) {
 			e.printStackTrace();

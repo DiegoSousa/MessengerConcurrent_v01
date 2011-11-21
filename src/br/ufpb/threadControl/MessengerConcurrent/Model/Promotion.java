@@ -10,14 +10,12 @@ package br.ufpb.threadControl.MessengerConcurrent.Model;
 
 public class Promotion {
 
-	private Product product;
-	private double currentPrice;
+	private Product product;	
 	private double discountedPrice;
 	private double promotionCode;
 
 	public Promotion(Product product, double discountedPrice, double promotionCode) {
 		this.product = product;
-		this.currentPrice = product.getPrice();
 		this.discountedPrice = discountedPrice;
 		this.promotionCode = promotionCode;
 	}
@@ -28,14 +26,6 @@ public class Promotion {
 
 	public void setProduct(Product product) {
 		this.product = product;
-	}
-
-	public double getCurrentPrice() {
-		return currentPrice;
-	}
-
-	public void setCurrentPrice(double currentPrice) {
-		this.currentPrice = currentPrice;
 	}
 
 	public double getDiscountedPrice() {
@@ -55,9 +45,10 @@ public class Promotion {
 	}
 
 	public String toString() {
-		return "Product: " + product.getName() + " CurrentPrice: "
-				+ currentPrice + " DiscountedPrice: " + discountedPrice
+		return "Product: " + product.getName() + " DiscountedPrice: " + discountedPrice
 				+ " PromotionCode: " + promotionCode;
 	}
+
+
 
 }

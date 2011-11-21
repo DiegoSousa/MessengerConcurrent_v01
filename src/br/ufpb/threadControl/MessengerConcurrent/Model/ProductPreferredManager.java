@@ -39,7 +39,7 @@ public class ProductPreferredManager {
 	public void addPreferencesClient(Client client) {
 		listOfAllPreferences.put(client, client.getListPreference());
 		logger.info("Client preferences: " + client.getName()
-				+ "added successfully");
+				+ " added successfully");
 	}
 
 	public void RemoverPreferencesClient(Client client) {

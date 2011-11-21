@@ -432,15 +432,18 @@ public class Facade {
 		}
 
 		public void run() {
-			Product product = locateProduct(client, codeProduct);
+			Product product = locateProduct(client, codeProduct);//added the product from the list of interest to the Customer
 
-			if (product != null && product.getQuantity() <= quantityOfProductsToBuy) {
-				product.setQuantity(product.getQuantity()- quantityOfProductsToBuy);
+			if ((product != null) && (product.getQuantity() >= quantityOfProductsToBuy)) {
+				product.setQuantity (product.getQuantity()- quantityOfProductsToBuy);
+				facade.editProduct(product);//Update
 				this.validation = true;
 				Logger.getLogger("Facade").log(Level.INFO,
 						"Purchase completed successfully.");
 			} else {
 				this.validation = false;
+				Logger.getLogger("Facade").log(Level.INFO,
+						"Product not found or greater than the quantity of product in stock.");
 			}
 		}
 

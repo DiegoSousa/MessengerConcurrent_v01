@@ -80,10 +80,6 @@ public class FacadeTest {
 
 		assertEquals(3, facade.getListClient().size());
 
-//		facade.removeClient("diego.sousa@dce.ufpb.br");
-//		facade.removeClient("ayla@dce.ufpb.br");
-//		facade.removeClient("kawe.ramon@dce.ufpb.br");
-
 	}
 
 	@Test
@@ -100,9 +96,6 @@ public class FacadeTest {
 
 		assertEquals(3, facade.getListProduct().size());
 
-//		facade.removeProduct(1234);
-//		facade.removeProduct(4321);
-//		facade.removeProduct(1334);
 	}
 
 	@Test
@@ -126,15 +119,6 @@ public class FacadeTest {
 		facade.addPromotion(promotion3);
 
 		assertEquals(3, facade.getListPromotion().size());
-//
-//		facade.removeProduct(1234);
-//		facade.removeProduct(4321);
-//		facade.removeProduct(1334);
-//
-//		facade.removePromotion(1245);
-//		facade.removePromotion(1246);
-//		facade.removePromotion(1247);
-
 	}
 
 	@Test
@@ -158,9 +142,6 @@ public class FacadeTest {
 		assertFalse(facade.getListClient().contains(client2));
 		assertEquals("Diego", facade.locateClient("diego.sousa@dce.ufpb.br")
 				.getName());
-//
-//		facade.removeClient("diego.sousa@dce.ufpb.br");
-//		facade.removeClient("kawe.ramon@dce.ufpb.br");
 
 	}
 
@@ -198,8 +179,6 @@ public class FacadeTest {
 		facade.editClient(client1);
 		assertEquals("João", client1.getName());
 
-//		facade.removeClient("diego.sousa@dce.ufpb.br");
-
 	}
 
 	@Test
@@ -211,8 +190,6 @@ public class FacadeTest {
 		assertTrue(facade.getListClient().contains(client1));
 
 		assertNotNull(facade.locateClient("diego.sousa@dce.ufpb.br"));
-
-//		facade.removeClient("diego.sousa@dce.ufpb.br");
 
 	}
 
@@ -232,13 +209,7 @@ public class FacadeTest {
 		assertEquals(3, facade.getListProduct().size());
 		
 		assertTrue(facade.getListProduct().contains(product));
-
-//		facade.removeProduct(1234);
-//		facade.removeProduct(4321);
-//		facade.removeProduct(1334);
-
-		
-		
+			
 	}
 
 	@Test
@@ -276,8 +247,6 @@ public class FacadeTest {
 		facade.editProduct(product);
 		assertTrue(facade.getListProduct().contains(product));
 		assertTrue(product.getPrice() == 2.45);
-
-//		facade.removeProduct(1234);
 		
 	}
 
@@ -291,21 +260,21 @@ public class FacadeTest {
 			
 		assertEquals(product, facade.locateProduct(client, 1234));
 		assertTrue(facade.locateProduct(client, 1234).getName().equalsIgnoreCase("Arroz"));
-		
-//		facade.removeProduct(1234);
-//		facade.removeClient("bisneto@dce.ufpb.br");			
+					
 	}
 
-	
+	@Test
 	public void testBuyProduct() {
 	
 		Product product = new Product("Arroz", 1234, 2.30, 100);
-		Client client = new Client("Diego", "3423-1435", "bisneto@dce.ufpb.br", 25, 11, 1988);
-		
-		assertTrue(facade.locateProduct(client, 1234).getQuantity() == 100);
+		Client client = new Client("Diego", "3423-1435", "bisneto@dce.ufpb.br", 25, 11, 1988);		
 		
 		facade.addClient(client);
 		facade.addProduct(product);
+
+		//By locating a product, it is inserted in the list of products customers want
+		assertTrue(facade.locateProduct(client, 1234).getQuantity() == 100);  
+		//When buying a product, it is inserted in the list of products customers want
 		facade.buyProduct(client, 1234, 10);
 		
 		assertFalse(facade.locateProduct(client, 1234).getQuantity() == 100);
@@ -335,15 +304,6 @@ public class FacadeTest {
 
 		assertEquals(3, facade.getListPromotion().size());
 		
-//		facade.removeProduct(1234);
-//		facade.removeProduct(4321);
-//		facade.removeProduct(1334);
-//
-//		facade.removePromotion(1245);
-//		facade.removePromotion(1246);
-//		facade.removePromotion(1247);
-
-	
 	}
 
 	@Test
@@ -394,12 +354,17 @@ public class FacadeTest {
 		assertTrue(facade.locatePromotion(1245).getDiscountedPrice()==1.00);
 		
 		promotion.setDiscountedPrice(1.20);
-		facade.editPromotion(promotion);
-		assertFalse(facade.locatePromotion(1245).getDiscountedPrice()==1.00);
-		assertTrue(facade.locatePromotion(1245).getDiscountedPrice()==1.20);
+		facade.editPromotion(promotion);	
 		
-//		facade.removePromotion(1245);								
-//		facade.removeProduct(1234);
+		try {
+			Thread.sleep(4000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		
+		assertTrue(facade.locatePromotion(1245).getDiscountedPrice()==1.20);
+		assertFalse(facade.locatePromotion(1245).getDiscountedPrice()==1.00);
+		
 	}
 
 	@Test
