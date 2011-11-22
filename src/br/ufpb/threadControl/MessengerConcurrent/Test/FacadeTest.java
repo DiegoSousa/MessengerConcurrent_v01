@@ -17,7 +17,7 @@ import br.ufpb.threadControl.MessengerConcurrent.Model.Product;
 import br.ufpb.threadControl.MessengerConcurrent.Model.Promotion;
 
 /**
- * Description of the class
+ * Test case in the facade class
  * 
  * @author Diego Sousa - www.diegosousa.com
  * @version 0.0.1 Copyright (C) 2011 Diego Sousa de Azevedo
