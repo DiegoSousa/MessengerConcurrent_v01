@@ -45,6 +45,7 @@ public class FacadeTest {
 		facade.getListClient().clear();
 		facade.getListProduct().clear();	
 		facade.getListPromotion().clear();
+		facade.getListProductPreferred().clear();
 	}
 
 	@Test
@@ -120,6 +121,32 @@ public class FacadeTest {
 
 		assertEquals(3, facade.getListPromotion().size());
 	}
+	
+	
+	@Test
+	public void testGetListProductPreferred() {
+		Product arroz = new Product("Arroz", 1234, 2.30, 100);
+		Product feijao = new Product("Feijão", 4321, 3.00, 100);	
+		
+		facade.addProduct(arroz);
+		facade.addProduct(feijao);
+		
+		Client client1 = new Client("Diego", "111", "diego.sousa@dce.ufpb.br",
+				18, 11, 1988);
+		Client client2 = new Client("Ayla", "222", "ayla@dce.ufpb.br", 18, 11,
+				1988);
+		facade.addClient(client1);
+		facade.addClient(client2);
+		
+		facade.locateProduct(client1, 1234);
+		facade.buyProduct(client1, 1234, 2);
+		facade.locateProduct(client2, 1234);
+		
+		assertEquals(2,facade.getListProductPreferred().size());
+		assertFalse(facade.getListProductPreferred().isEmpty());	
+		
+	}
+
 
 	@Test
 	public void testAddClient() {
@@ -354,14 +381,14 @@ public class FacadeTest {
 		assertTrue(facade.locatePromotion(1245).getDiscountedPrice()==1.00);
 		
 		promotion.setDiscountedPrice(1.20);
-		facade.editPromotion(promotion);	
-		
 		try {
-			Thread.sleep(4000);
+			Thread.sleep(5000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 		
+		facade.editPromotion(promotion);	
+	
 		assertTrue(facade.locatePromotion(1245).getDiscountedPrice()==1.20);
 		assertFalse(facade.locatePromotion(1245).getDiscountedPrice()==1.00);
 		
@@ -379,5 +406,60 @@ public class FacadeTest {
 		assertTrue(facade.locatePromotion(1245).getDiscountedPrice()==1.00);
 		assertNull(facade.locatePromotion(1342));
 	}
-
+	
+	@Test
+	public void testAddPreferencesClient(){
+				
+		Product arroz = new Product("Arroz", 1234, 2.30, 100);
+		Product feijao = new Product("Feijão", 4321, 3.00, 100);	
+		
+		facade.addProduct(arroz);
+		facade.addProduct(feijao);
+		
+		Client client1 = new Client("Diego", "111", "diego.sousa@dce.ufpb.br",
+				18, 11, 1988);
+			
+				
+		facade.addClient(client1);		
+		
+		client1.addListPreference(arroz);
+		client1.addListPreference(feijao);
+		
+		facade.addPreferencesClient(client1);
+		
+		assertTrue(facade.getListProductPreferred().containsKey(client1));
+		assertEquals(1,facade.getListProductPreferred().size());
+		
+	}
+	
+	
+	@Test
+	public void testremovePreferencesClient(){
+		
+		Product arroz = new Product("Arroz", 1234, 2.30, 100);
+		Product feijao = new Product("Feijão", 4321, 3.00, 100);	
+		
+		facade.addProduct(arroz);
+		facade.addProduct(feijao);
+		
+		Client client1 = new Client("Diego", "111", "diego.sousa@dce.ufpb.br",
+				18, 11, 1988);
+							
+		facade.addClient(client1);		
+		
+		client1.addListPreference(arroz);
+		client1.addListPreference(feijao);
+		
+		facade.addPreferencesClient(client1);
+		
+		assertTrue(facade.getListProductPreferred().containsKey(client1));
+		assertEquals(1,facade.getListProductPreferred().size());
+		
+		facade.removePreferencesClient(client1);
+		
+		assertFalse(facade.getListProductPreferred().containsKey(client1));
+		assertEquals(0,facade.getListProductPreferred().size());
+		
+	}
+	
 }

@@ -39,15 +39,19 @@ public class ProductPreferredManager {
 	public void addPreferencesClient(Client client) {
 		listOfAllPreferences.put(client, client.getListPreference());
 		logger.info("Client preferences: " + client.getName()
-				+ " added successfully");
+				+ " added or updated successfully");
 	}
 
-	public void RemoverPreferencesClient(Client client) {
+	/*
+	 * Remove the complete list of preferences of a customer
+	 */
+		
+	public void removePreferencesClient(Client client) {
 		listOfAllPreferences.remove(client);
 		logger.info("Client preferences: " + client.getName()
-				+ "removed successfully");
+				+ " removed successfully");
 	}
-
+	
 	public HashMap<Client, LinkedBlockingQueue<Product>> getListPreference() {
 		return listOfAllPreferences;
 	}

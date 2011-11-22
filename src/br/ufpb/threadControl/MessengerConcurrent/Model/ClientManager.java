@@ -89,7 +89,7 @@ public class ClientManager {
 		logger.info("Client not found!");
 		return null;
 	}
-
+	
 	public LinkedBlockingQueue<Client> getListClient() {
 		return listClient;
 	}

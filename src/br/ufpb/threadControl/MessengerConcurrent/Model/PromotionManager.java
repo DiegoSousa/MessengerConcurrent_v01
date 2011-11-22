@@ -75,8 +75,8 @@ public class PromotionManager {
 		Promotion promotionAux = locatePromotion(promotion.getPromotionCode());
 
 		if (promotionAux != null) {
-			listPromotion.remove(promotionAux);
-			listPromotion.add(promotion);
+			listPromotion.remove(promotionAux);			
+			listPromotion.add(promotion);			
 			logger.info("Updated with success Promotion!");
 			return promotion;
 		} else {

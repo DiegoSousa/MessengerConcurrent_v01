@@ -55,8 +55,8 @@ public class Product {
 	}
 
 	public String toString() {
-		return "Name: " + this.name + "Code: " + this.code + "Price: "
-				+ this.price + "Quantity: " + this.quantity;
+		return "Name: " + this.name + " Code: " + this.code + " Price: "
+				+ this.price + " Quantity: " + this.quantity;
 
 	}
 

@@ -1,5 +1,6 @@
 package br.ufpb.threadControl.MessengerConcurrent.Controller;
 
+import java.util.HashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -55,17 +56,18 @@ public class Facade {
 	}
 
 	// -------------------------------------------------------------------------
-	// getList Client, Product, Promotion
+	// getList Client, Product, Promotion and ProductPreferred
 
 	public LinkedBlockingQueue<Client> getListClient() {
 		ThreadGetListClient threadGetListClient = new ThreadGetListClient(
 				clientManager);
 		executor.execute(threadGetListClient);
-
-		try {
-			Thread.sleep(5000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
+		while (threadGetListClient.getCompleted() == false) {
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}
 
 		LinkedBlockingQueue<Client> list = threadGetListClient.getList();
@@ -97,6 +99,24 @@ public class Facade {
 		}
 
 		LinkedBlockingQueue<Promotion> list = threadGetListPromotion.getList();
+		return list;
+	}
+
+	public HashMap<Client, LinkedBlockingQueue<Product>> getListProductPreferred() {
+		ThreadGetListProductPreferred threadGetListProductPreferred = new ThreadGetListProductPreferred(
+				productPreferredManager);
+		executor.execute(threadGetListProductPreferred);
+
+		while (threadGetListProductPreferred.getCompleted() == false) {
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+
+		HashMap<Client, LinkedBlockingQueue<Product>> list = threadGetListProductPreferred
+				.getListProductPreferred();
 		return list;
 	}
 
@@ -159,18 +179,18 @@ public class Facade {
 		return product;
 	}
 
-	public boolean buyProduct(Client client, double codeProduct, int quantity) {		
-		ThreadBuyProduct threadBuyProduct = new ThreadBuyProduct(client, codeProduct,
-				quantity);
+	public boolean buyProduct(Client client, double codeProduct, int quantity) {
+		ThreadBuyProduct threadBuyProduct = new ThreadBuyProduct(client,
+				codeProduct, quantity);
 		boolean validation;
-		
-		executor.execute(threadBuyProduct);		
-		try{
+
+		executor.execute(threadBuyProduct);
+		try {
 			Thread.sleep(5000);
-		}catch(Exception e){
+		} catch (Exception e) {
 			e.getMessage();
 		}
-		
+
 		validation = threadBuyProduct.validation;
 		return validation;
 	}
@@ -203,6 +223,19 @@ public class Facade {
 		Promotion promotion = threadLocatePromotion.getPromotion();
 
 		return promotion;
+	}
+
+	// -------------------------------------------------------------------------
+	// methods concurrent CRUD ProductPreferred
+
+	public void addPreferencesClient(Client client) {
+		executor.execute(new ThreadAddPreferencesClient(
+				productPreferredManager, client));
+	}
+
+	public void removePreferencesClient(Client client) {
+		executor.execute(new ThreadRemovePreferencesClient(
+				productPreferredManager, client));
 	}
 
 	// -------------------------------------------------------------------------
@@ -263,6 +296,7 @@ public class Facade {
 	class ThreadGetListClient implements Runnable {
 		private ClientManager clientManager;
 		private LinkedBlockingQueue<Client> list;
+		private boolean completed = false;
 
 		public ThreadGetListClient(ClientManager manager) {
 			this.clientManager = manager;
@@ -271,6 +305,11 @@ public class Facade {
 		@Override
 		public void run() {
 			list = this.clientManager.getListClient();
+			completed = true;
+		}
+
+		public boolean getCompleted() {
+			return completed;
 		}
 
 		public LinkedBlockingQueue<Client> getList() {
@@ -406,9 +445,9 @@ public class Facade {
 
 		public Product getProduct() {
 
-			while (this.product==null) {
+			while (this.product == null) {
 				try {
-					Thread.sleep(4000);
+					Thread.sleep(1000);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
@@ -432,18 +471,22 @@ public class Facade {
 		}
 
 		public void run() {
-			Product product = locateProduct(client, codeProduct);//added the product from the list of interest to the Customer
+			// added the product from the list of interest to the Customer
+			Product product = locateProduct(client, codeProduct);
 
-			if ((product != null) && (product.getQuantity() >= quantityOfProductsToBuy)) {
-				product.setQuantity (product.getQuantity()- quantityOfProductsToBuy);
-				facade.editProduct(product);//Update
+			if ((product != null)
+					&& (product.getQuantity() >= quantityOfProductsToBuy)) {
+				product.setQuantity(product.getQuantity()
+						- quantityOfProductsToBuy);
+				facade.editProduct(product);// Update
 				this.validation = true;
 				Logger.getLogger("Facade").log(Level.INFO,
 						"Purchase completed successfully.");
 			} else {
 				this.validation = false;
-				Logger.getLogger("Facade").log(Level.INFO,
-						"Product not found or greater than the quantity of product in stock.");
+				Logger.getLogger("Facade")
+						.log(Level.INFO,
+								"Product not found or greater than the quantity of product in stock.");
 			}
 		}
 
@@ -546,13 +589,76 @@ public class Facade {
 				return this.promotion;
 			} else {
 				try {
-					Thread.sleep(4000);
+					Thread.sleep(1000);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
 				return this.promotion;
 			}
 
+		}
+	}
+
+	// --------------------------------------------------------------------
+	// Inner class of the concurrent ProductPreferred
+
+	class ThreadAddPreferencesClient implements Runnable {
+
+		private ProductPreferredManager productPreferredManager;
+		private Client client;
+
+		public ThreadAddPreferencesClient(
+				ProductPreferredManager productPreferredManager, Client client) {
+			this.productPreferredManager = productPreferredManager;
+			this.client = client;
+		}
+
+		@Override
+		public void run() {
+			this.productPreferredManager.addPreferencesClient(client);
+		}
+	}
+
+	class ThreadRemovePreferencesClient implements Runnable {
+
+		private ProductPreferredManager productPreferredManager;
+		private Client client;
+
+		public ThreadRemovePreferencesClient(
+				ProductPreferredManager productPreferredManager, Client client) {
+			this.productPreferredManager = productPreferredManager;
+			this.client = client;
+		}
+
+		@Override
+		public void run() {
+			this.productPreferredManager.removePreferencesClient(client);
+		}
+	}
+
+	class ThreadGetListProductPreferred implements Runnable {
+		private ProductPreferredManager productPreferredManager;
+		private HashMap<Client, LinkedBlockingQueue<Product>> listProductPreferred;
+		private boolean completed = false;
+
+		public ThreadGetListProductPreferred(
+				ProductPreferredManager productPreferredManager) {
+			this.productPreferredManager = productPreferredManager;
+		}
+
+		@Override
+		public void run() {
+			this.listProductPreferred = productPreferredManager
+					.getListPreference();
+			completed = true;
+		}
+
+		public boolean getCompleted() {
+			return completed;
+		}
+
+		public HashMap<Client, LinkedBlockingQueue<Product>> getListProductPreferred() {
+			return listProductPreferred;
 		}
 	}
 }
