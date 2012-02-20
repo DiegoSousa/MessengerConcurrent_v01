@@ -1,4 +1,4 @@
-package br.ufpb.threadControl.MessengerConcurrent.Model;
+package br.ufpb.threadControl.MessengerConcurrent.Entity;
 
 /**
  * Entity Promotion

@@ -1,15 +1,15 @@
-package br.ufpb.threadControl.MessengerConcurrent.Model;
+package br.ufpb.threadControl.MessengerConcurrent.Entity;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.concurrent.LinkedBlockingQueue;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Entity Client
  * 
  * @author Diego Sousa - www.diegosousa.com
- * @version 0.0.1
- * Copyright (C) 2011 Diego Sousa de Azevedo
+ * @version 0.1 Copyright (C) 2011 Diego Sousa de Azevedo
  */
 
 public class Client {
@@ -21,7 +21,8 @@ public class Client {
 	private int birthday;
 	private int monthOfBirth;
 	private int yearOfbirth;
-	private LinkedBlockingQueue<Product> listProductPreferred;
+	private List<Product> productRegistrationPreferred;
+	private List<Product> registrationProductBuy;
 
 	public Client(String name, String phone, String mail, int birthday,
 			int monthOfBirth, int yearOfbirth) {
@@ -30,7 +31,11 @@ public class Client {
 		this.mail = mail;
 		this.calendar = new GregorianCalendar();
 		this.calendar.set(yearOfbirth, monthOfBirth, birthday);
-		this.listProductPreferred = new LinkedBlockingQueue<Product>();
+		this.productRegistrationPreferred = new LinkedList<Product>();
+		this.registrationProductBuy = new LinkedList<Product>();
+	}
+
+	public Client() {
 	}
 
 	public String getName() {
@@ -81,16 +86,20 @@ public class Client {
 		calendar.set(Calendar.YEAR, yearOfbirth);
 	}
 
-	public void addListPreference(Product product) {
-		try {
-			listProductPreferred.put(product);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+	public synchronized void addPreferredProduct(Product product) {		
+			productRegistrationPreferred.add(product);		
 	}
 
-	public LinkedBlockingQueue<Product> getListPreference() {
-		return listProductPreferred;
+	public synchronized List<Product> getListPreferredProduct() {
+		return productRegistrationPreferred;
+	}
+
+	public synchronized void addProductBuy(Product product) {		
+			registrationProductBuy.add(product);		
+	}
+	
+	public synchronized List<Product> getListProductBuy() {
+		return registrationProductBuy;
 	}
 
 	public String toString() {

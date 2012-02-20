@@ -1,7 +1,10 @@
-package br.ufpb.threadControl.MessengerConcurrent.Model;
+package br.ufpb.threadControl.MessengerConcurrent.Managers;
 
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Logger;
+
+import br.ufpb.threadControl.MessengerConcurrent.Entity.Product;
 
 /**
  * Product Manager
@@ -12,49 +15,52 @@ import java.util.logging.Logger;
 
 public class ProductManager {
 
-	private LinkedBlockingQueue<Product> listProduct;	
-	private Logger logger;
 	private static ProductManager productManager;
-	
+	private BlockingQueue<Product> listProduct;
+	private Logger logger;
+
 	private ProductManager() {
 		this.listProduct = new LinkedBlockingQueue<Product>();
-		this.logger = Logger.getLogger("br.ufpb.threadControl.birthdayMessage.Model.ProductManager");
+		this.logger = Logger
+				.getLogger("br.ufpb.threadControl.birthdayMessage.Model.ProductManager");
 	}
-	
+
 	/*
 	 * Singleton
 	 */
-	
-	public static ProductManager getIntance(){
-		if(productManager == null){
-			productManager = new ProductManager();
-			return productManager;
-		}else{
-			return productManager;
-		}		
-	}
-	
 
-	public void addProduct(Product product) {
-		try {
-			listProduct.put(product);
-			logger.info("Product: " + product.getName() + " Code: "
-					+ product.getCode() + " ,successfully added!");
-		} catch (InterruptedException e) {
-			e.getMessage();
-		} catch (NullPointerException e) {
-			e.getMessage();
+	public static synchronized ProductManager getInstance() {
+		if (productManager == null) {
+			productManager = new ProductManager();
+		}
+		return productManager;
+	}
+
+	public Product addProduct(Product product) {
+		if (product != null) {
+			try {
+				listProduct.put(product);
+				logger.info("Product: " + product.getName() + " Code: "
+						+ product.getCode() + " ,successfully added!");
+			} catch (InterruptedException e) {
+				e.getMessage();
+			} catch (NullPointerException e) {
+				e.getMessage();
+			}
+			return product;
+
+		} else {
+			return null;
 		}
 	}
 
-	public Product removeProduct(double code) {
-		Product productAux = locateProduct(code);
+	public Product removeProduct(Product product) {
 
-		if (productAux != null) {
-			listProduct.remove(productAux);
-			logger.info("Product: " + productAux.getName() + " Code: "
-					+ productAux.getCode() + " ,successfully removed!");
-			return productAux;
+		if (product != null) {
+			listProduct.remove(product);
+			logger.info("Product: " + product.getName() + " Code: "
+					+ product.getCode() + " ,successfully removed!");
+			return product;
 		} else {
 			logger.info("Product not found!");
 			return null;
@@ -83,7 +89,7 @@ public class ProductManager {
 		return null;
 	}
 
-	public Product locateProduct(double code) {
+	public Product searchProduct(double code) {
 
 		for (Product product : listProduct) {
 			if (product.getCode() == code) {
@@ -96,7 +102,7 @@ public class ProductManager {
 		return null;
 	}
 
-	public LinkedBlockingQueue<Product> getListProduct() {
+	public synchronized BlockingQueue<Product> getListProduct() {
 		return listProduct;
 	}
 
