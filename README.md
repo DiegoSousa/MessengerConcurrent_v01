@@ -2,9 +2,9 @@ ThreadControl
 _____________
 
 
-Project PIVIC - Universidade Federal da Paraiba.
+Project PIVIC - Federal University of Paraíba.
 
-Teacher: Ayla Rebouças
+Teacher: Ayla Rebouças - http://goo.gl/p2urH
 
-Mais Informações: https://sites.google.com/a/dce.ufpb.br/tct/inicio
+More Information: http://goo.gl/8Ywy1
 
