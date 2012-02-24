@@ -13,7 +13,7 @@ import br.ufpb.threadControl.MessengerConcurrent.Managers.*;
  * Facade
  * 
  * @author Diego Sousa - www.diegosousa.com
- * @version 0.0.2 Copyright (C) 2011 Diego Sousa de Azevedo.
+ * @version 2.0 Copyright (C) 2012 Diego Sousa de Azevedo.
  */
 
 public class Facade {
@@ -21,7 +21,7 @@ public class Facade {
 	private ClientManager clientManager;
 	private ProductManager productManager;
 	private PromotionManager promotionManager;
-	private ProductPreferredManager productPreferredManager;
+	private ProductPreferencesManager productPreferencesManager;
 	private ExecutorService executor;
 	private static Facade facade;
 
@@ -29,7 +29,7 @@ public class Facade {
 		this.clientManager = ClientManager.getInstance();
 		this.productManager = ProductManager.getInstance();
 		this.promotionManager = PromotionManager.getInstance();
-		this.productPreferredManager = ProductPreferredManager.getInstance();
+		this.productPreferencesManager = ProductPreferencesManager.getInstance();
 		this.executor = Executors.newFixedThreadPool(6);
 	}
 
@@ -68,7 +68,7 @@ public class Facade {
 	}
 
 	public void getListOfClient(BlockingQueue<BlockingQueue<Client>> listClient) {
-		executor.execute(new ThreadGetListClient(clientManager, listClient));
+		executor.execute(new ThreadGetListOfClient(clientManager, listClient));
 	}
 
 	// -------------------------------------------------------------------------
@@ -123,43 +123,46 @@ public class Facade {
 	// -------------------------------------------------------------------------
 	// methods concurrent CRUD ProductPreferred
 
-	public void addPreferencesClient(Client client) {
+	public void addPreferencesClient(Client client, Product product) {
 		executor.execute(new ThreadAddPreferencesClient(
-				productPreferredManager, client));
+				productPreferencesManager, client, product));
 	}
 
 	public void removeAllPreferencesClient(Client client) {
 		executor.execute(new ThreadRemovePreferencesClient(
-				productPreferredManager, client));
+				productPreferencesManager, client));
 	}
 
 	public void getListProductPreferredClient(
 			BlockingQueue<List<Product>> list, Client client) {
-		executor.execute(new ThreadGetListProductPreferredClient(
-				productPreferredManager, list, client));
+		executor.execute(new ThreadGetListProductPreferencesClient(
+				productPreferencesManager, list, client));
 	}
 
 	public void getListProductPreferredAllClients(
 			BlockingQueue<Map<Client, List<Product>>> list) {
-		executor.execute(new ThreadGetListProductPreferredAllClients(
-				productPreferredManager, list));
+		executor.execute(new ThreadGetListProductPreferencesAllClients(
+				productPreferencesManager, list));
 	}
 
 	// -------------------------------------------------------------------------
 	// methods concurrent of ProductBuyManager
 
-	public void buyProduct(Client client, double codeProduct, int quantity) {
-		executor.execute(new ThreadBuyProduct(client, codeProduct, quantity));
+	public void buyProduct(Client client, Product product, int quantity) {
+		executor.execute(new ThreadBuyProduct(client, product, quantity));
+	}	
+	
+	public void removeHistoricBuyClient(Client client){
+		executor.execute(new ThreadRemoveHistoricBuyClient(client));
 	}
-
-	public void getListProductsBuyAllClient(//falta testar
+	
+	public void getHistoricProductsBuyClient(Client client,
+			BlockingQueue<List<Product>> list) {
+		executor.execute(new ThreadGetHistoricProductsBuyClient(client, list));
+	}
+	
+	public void getHistoricProductsBuyAllClient(
 			BlockingQueue<Map<Client, List<Product>>> list) {
-		executor.execute(new ThreadGetListProductsBuyAllClient(list));
+		executor.execute(new ThreadGetHistoricProductsBuyAllClient(list));
 	}
-
-	public void getListProductsBuyClient(Client client,
-			BlockingQueue<List<Product>> list) {//falta testar
-		executor.execute(new ThreadGetListProductsBuyClient(client, list));
-	}
-
 }

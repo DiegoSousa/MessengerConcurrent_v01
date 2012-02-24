@@ -4,14 +4,14 @@ package br.ufpb.threadControl.MessengerConcurrent.Managers;
  * Promotion Manager
  * 
  * @author Diego Sousa - www.diegosousa.com
- * @version 0.0.1
- * Copyright (C) 2011 Diego Sousa de Azevedo
+ * @version 2.0 Copyright (C) 2012 Diego Sousa de Azevedo
  */
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Logger;
 
+import br.ufpb.threadControl.MessengerConcurrent.Entity.Product;
 import br.ufpb.threadControl.MessengerConcurrent.Entity.Promotion;
 
 public class PromotionManager {
@@ -37,9 +37,9 @@ public class PromotionManager {
 		return promotionManager;
 	}
 
-	public Promotion addPromotion(Promotion promotion) {		
-		if (promotion != null) {			
-			try {				
+	public Promotion addPromotion(Promotion promotion) {
+		if (promotion != null) {
+			try {
 				listPromotion.put(promotion);
 				logger.info("Created promotion successfully! Promotion Code: "
 						+ promotion.getPromotionCode());
@@ -52,8 +52,8 @@ public class PromotionManager {
 		}
 	}
 
-	public Promotion removePromotion(Promotion promotion) {		
-		if (promotion != null) {			
+	public Promotion removePromotion(Promotion promotion) {
+		if (promotion != null) {
 			for (Promotion promotionAux : listPromotion) {
 				if (promotionAux.getPromotionCode() == promotion
 						.getPromotionCode()) {
@@ -87,6 +87,17 @@ public class PromotionManager {
 
 		for (Promotion promotion : listPromotion) {
 			if (promotion.getPromotionCode() == promotionCode) {
+				return promotion;
+			}
+		}
+		logger.info("Promotion not found!");
+		return null;
+	}
+
+	public Promotion searchPromotion(Product product) {
+
+		for (Promotion promotion : listPromotion) {
+			if (promotion.getProduct() == product) {
 				return promotion;
 			}
 		}

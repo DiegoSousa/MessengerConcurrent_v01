@@ -4,17 +4,17 @@ package br.ufpb.threadControl.MessengerConcurrent.Entity;
  * Entity Promotion
  * 
  * @author Diego Sousa - www.diegosousa.com
- * @version 0.0.1
- * Copyright (C) 2011 Diego Sousa de Azevedo
+ * @version 2.0 Copyright (C) 2012 Diego Sousa de Azevedo
  */
 
 public class Promotion {
 
-	private Product product;	
+	private Product product;
 	private double discountedPrice;
 	private double promotionCode;
 
-	public Promotion(Product product, double discountedPrice, double promotionCode) {
+	public Promotion(Product product, double discountedPrice,
+			double promotionCode) {
 		this.product = product;
 		this.discountedPrice = discountedPrice;
 		this.promotionCode = promotionCode;
@@ -45,10 +45,7 @@ public class Promotion {
 	}
 
 	public String toString() {
-		return "Product: " + product.getName() + " DiscountedPrice: " + discountedPrice
-				+ " PromotionCode: " + promotionCode;
+		return "Product: " + product.getName() + " DiscountedPrice: "
+				+ discountedPrice + " PromotionCode: " + promotionCode;
 	}
-
-
-
 }

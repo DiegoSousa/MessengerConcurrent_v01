@@ -10,7 +10,7 @@ import br.ufpb.threadControl.MessengerConcurrent.Entity.Product;
  * Product Manager
  * 
  * @author Diego Sousa - www.diegosousa.com
- * @version 0.0.1 Copyright (C) 2011 Diego Sousa de Azevedo
+ * @version 2.0 Copyright (C) 2012 Diego Sousa de Azevedo
  */
 
 public class ProductManager {

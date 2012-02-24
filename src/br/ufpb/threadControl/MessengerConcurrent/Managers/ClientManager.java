@@ -10,19 +10,23 @@ import br.ufpb.threadControl.MessengerConcurrent.Entity.Client;
  * Client Manager
  * 
  * @author Diego Sousa - www.diegosousa.com
- * @version 0.0.1 Copyright (C) 2011 Diego Sousa de Azevedo
+ * @version 2.0 Copyright (C) 2012 Diego Sousa de Azevedo
  */
 
 public class ClientManager {
 
 	private static ClientManager clientManager;
+	private ProductPreferencesManager productPreferencesManager;
+	private ProductBuyManager productBuyManager;
 	private BlockingQueue<Client> listClient;
 	private Logger logger;
-
+	
 	private ClientManager() {
+		this.productPreferencesManager = ProductPreferencesManager.getInstance();
+		this.productBuyManager = ProductBuyManager.getInstance();
 		this.listClient = new LinkedBlockingQueue<Client>();
 		this.logger = Logger
-				.getLogger("br.ufpb.threadControl.birthdayMessage.Model.ClientManager");
+				.getLogger("br.ufpb.threadControl.birthdayMessage.Model.ClientManager");		
 	}
 
 	/*
@@ -57,6 +61,8 @@ public class ClientManager {
 
 		if (client != null) {
 			listClient.remove(client);
+			productPreferencesManager.removeAllPreferencesClient(client);
+			productBuyManager.removeHistoricBuyClient(client);
 			logger.info(client.getMail() + " successfully removed!");
 			return client;
 		} else {
@@ -69,9 +75,9 @@ public class ClientManager {
 			for (Client clientAux : listClient) {
 
 				if (clientAux.getMail().equals(client.getMail())) {
-					listClient.remove(clientAux);
+					listClient.remove(clientAux);					
 					try {
-						listClient.put(client);
+						listClient.put(client);						
 					} catch (InterruptedException e) {
 						e.getMessage();
 					} catch (NullPointerException e) {
@@ -97,7 +103,7 @@ public class ClientManager {
 		return null;
 	}
 
-	public synchronized BlockingQueue<Client> getListClient() {
+	public synchronized BlockingQueue<Client> getListOfClient() {
 		return listClient;
 	}
 }

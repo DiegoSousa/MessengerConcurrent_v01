@@ -4,6 +4,6 @@ _____________
 
 Project PIVIC - Universidade Federal da Paraiba.
 
-Orientador: Ayla Rebouças
+Teacher: Ayla Rebouças
 Mais Informações: https://sites.google.com/a/dce.ufpb.br/tct/inicio
 
