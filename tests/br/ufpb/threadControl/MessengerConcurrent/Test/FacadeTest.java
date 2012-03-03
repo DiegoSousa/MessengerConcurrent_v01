@@ -28,13 +28,13 @@ public class FacadeTest {
 	public static BlockingQueue<BlockingQueue<Product>> copyListOfAllProduct;
 	public static BlockingQueue<BlockingQueue<Promotion>> copyListOfAllPromotion;
 	public static BlockingQueue<Map<Client, List<Product>>> copyAllClientsPreferences;
-	public static BlockingQueue<Map<Client, List<Product>>> copyHistoricProductsBuyAllClient;
+	public static BlockingQueue<Map<Client, List<Product>>> copyHistoricalOfProductsPurchasedOfAllCustomers;
 
 	public static BlockingQueue<Client> takerClientList;
 	public static BlockingQueue<Product> takerProductList;
 	public static BlockingQueue<Promotion> takerPromotionList;
 	public static BlockingQueue<List<Product>> takerProductPreferredClient;
-	public static BlockingQueue<List<Product>> takerHistoricProductsBuyClient;
+	public static BlockingQueue<List<Product>> takerHistoricalOfProductsPurchasedOfCustomers;
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -44,13 +44,13 @@ public class FacadeTest {
 		copyListOfAllProduct = new LinkedBlockingQueue<BlockingQueue<Product>>();
 		copyListOfAllPromotion = new LinkedBlockingQueue<BlockingQueue<Promotion>>();
 		copyAllClientsPreferences = new LinkedBlockingQueue<Map<Client, List<Product>>>();
-		copyHistoricProductsBuyAllClient = new LinkedBlockingQueue<Map<Client, List<Product>>>();
+		copyHistoricalOfProductsPurchasedOfAllCustomers = new LinkedBlockingQueue<Map<Client, List<Product>>>();
 
 		takerClientList = new LinkedBlockingQueue<Client>();
 		takerProductList = new LinkedBlockingQueue<Product>();
 		takerPromotionList = new LinkedBlockingQueue<Promotion>();
 		takerProductPreferredClient = new LinkedBlockingQueue<List<Product>>();
-		takerHistoricProductsBuyClient = new LinkedBlockingQueue<List<Product>>();
+		takerHistoricalOfProductsPurchasedOfCustomers = new LinkedBlockingQueue<List<Product>>();
 
 		System.out.println("Starting the test facade class...");
 	}
@@ -75,14 +75,15 @@ public class FacadeTest {
 		takerProductList.clear();
 		takerPromotionList.clear();
 		takerProductPreferredClient.clear();
-		takerHistoricProductsBuyClient.clear();
+		takerHistoricalOfProductsPurchasedOfCustomers.clear();
 
-		ClientManager.getInstance().getListOfClient().clear();
-		ProductManager.getInstance().getListProduct().clear();
-		ProductPreferencesManager.getInstance().getListPreferenceAllCLient()
-				.clear();
-		PromotionManager.getInstance().getListPromotion().clear();
-		ProductBuyManager.getInstance().getHistoricBuyAllCLient().clear();
+		ManagerClient.getInstance().getListOfClient().clear();
+		ManagerProduct.getInstance().getListProduct().clear();
+		ManagerProductPreferences.getInstance()
+				.getListOfPreferredProductsOfAllCustomers().clear();
+		ManagerPromotion.getInstance().getListPromotion().clear();
+		ManagerPurchasesOfProducts.getInstance()
+				.getHistoricalOfProductsPurchasedOfAllCustomers().clear();
 	}
 
 	@Test
@@ -843,11 +844,11 @@ public class FacadeTest {
 			e1.printStackTrace();
 		}
 
-		facade.getHistoricProductsBuyClient(client,
-				takerHistoricProductsBuyClient);
+		facade.getHistoricalCustomerPurchase(client,
+				takerHistoricalOfProductsPurchasedOfCustomers);
 
 		try {
-			listAux = takerHistoricProductsBuyClient.take();
+			listAux = takerHistoricalOfProductsPurchasedOfCustomers.take();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -857,7 +858,7 @@ public class FacadeTest {
 	}
 
 	@Test
-	public void removeHistoricBuyClient() {
+	public void removeHistoricalOfProductsPurchasedOfCustomers() {
 		List<Product> listClient = null;
 		Map<Client, List<Product>> listAllClient = null;
 
@@ -876,13 +877,13 @@ public class FacadeTest {
 			e1.printStackTrace();
 		}
 
-		facade.getHistoricProductsBuyClient(client,
-				takerHistoricProductsBuyClient);
-		facade.getHistoricProductsBuyAllClient(copyHistoricProductsBuyAllClient);
+		facade.getHistoricalCustomerPurchase(client,
+				takerHistoricalOfProductsPurchasedOfCustomers);
+		facade.getHistoricalPurchasesOfAllCustomer(copyHistoricalOfProductsPurchasedOfAllCustomers);
 
 		try {
-			listClient = takerHistoricProductsBuyClient.take();
-			listAllClient = copyHistoricProductsBuyAllClient.take();
+			listClient = takerHistoricalOfProductsPurchasedOfCustomers.take();
+			listAllClient = copyHistoricalOfProductsPurchasedOfAllCustomers.take();
 
 		} catch (InterruptedException e) {
 			e.printStackTrace();
@@ -898,7 +899,7 @@ public class FacadeTest {
 		listClient.clear();
 		listAllClient.clear();
 
-		facade.removeHistoricBuyClient(client);
+		facade.removeHistoricalCustomerPurchase(client);
 
 		try {
 			Thread.sleep(4000);
@@ -906,10 +907,10 @@ public class FacadeTest {
 			e.printStackTrace();
 		}
 
-		facade.getHistoricProductsBuyAllClient(copyHistoricProductsBuyAllClient);
+		facade.getHistoricalPurchasesOfAllCustomer(copyHistoricalOfProductsPurchasedOfAllCustomers);
 
 		try {
-			listAllClient = copyHistoricProductsBuyAllClient.take();
+			listAllClient = copyHistoricalOfProductsPurchasedOfAllCustomers.take();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -920,7 +921,7 @@ public class FacadeTest {
 	}
 
 	@Test
-	public void getHistoricProductsBuyClient() {
+	public void getHistoricalPurchasesOfAllCustomer() {
 
 		List<Product> listAux = null;
 
@@ -939,11 +940,11 @@ public class FacadeTest {
 			e1.printStackTrace();
 		}
 
-		facade.getHistoricProductsBuyClient(client,
-				takerHistoricProductsBuyClient);
+		facade.getHistoricalCustomerPurchase(client,
+				takerHistoricalOfProductsPurchasedOfCustomers);
 
 		try {
-			listAux = takerHistoricProductsBuyClient.take();
+			listAux = takerHistoricalOfProductsPurchasedOfCustomers.take();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -997,10 +998,10 @@ public class FacadeTest {
 			e1.printStackTrace();
 		}
 
-		facade.getHistoricProductsBuyAllClient(copyHistoricProductsBuyAllClient);
+		facade.getHistoricalPurchasesOfAllCustomer(copyHistoricalOfProductsPurchasedOfAllCustomers);
 
 		try {
-			listAux = copyHistoricProductsBuyAllClient.take();
+			listAux = copyHistoricalOfProductsPurchasedOfAllCustomers.take();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
