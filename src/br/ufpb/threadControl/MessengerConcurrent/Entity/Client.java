@@ -1,7 +1,6 @@
 package br.ufpb.threadControl.MessengerConcurrent.Entity;
 
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 
 /**
  * Entity Client
@@ -15,21 +14,19 @@ public class Client {
 	private String name;
 	private String phone;
 	private String mail;
-	private Calendar calendar;
-	private int birthday;
-	private int monthOfBirth;
-	private int yearOfbirth;
+	private Calendar calendar= null;	
 
 	public Client(String name, String phone, String mail, int birthday,
 			int monthOfBirth, int yearOfbirth) {
 		this.name = name;
 		this.phone = phone;
 		this.mail = mail;
-		this.calendar = new GregorianCalendar();
+		this.calendar = Calendar.getInstance();		
 		this.calendar.set(yearOfbirth, monthOfBirth, birthday);
 	}
 
 	public Client() {
+		calendar = Calendar.getInstance();
 	}
 
 	public String getName() {
@@ -45,15 +42,15 @@ public class Client {
 	}
 
 	public int getBirthday() {
-		return calendar.get(GregorianCalendar.DATE);
+		return calendar.get(Calendar.DAY_OF_MONTH);
 	}
 
 	public int getMonthOfBirth() {
-		return calendar.get(GregorianCalendar.MONTH);
+		return calendar.get(Calendar.MONTH);
 	}
 
 	public int getYearOfbirth() {
-		return calendar.get(GregorianCalendar.YEAR);
+		return calendar.get(Calendar.YEAR);
 	}
 
 	public void setName(String name) {
@@ -69,7 +66,7 @@ public class Client {
 	}
 
 	public void setBirthday(int birthday) {
-		calendar.set(Calendar.DATE, birthday);
+		calendar.set(Calendar.DAY_OF_MONTH, birthday);
 	}
 
 	public void setMonthOfBirth(int monthOfBirth) {
@@ -82,7 +79,7 @@ public class Client {
 
 	public String toString() {
 		return "Name: " + name + "\nPhone: " + phone + "\nMail: " + mail
-				+ "\nDate of birth: " + birthday + "/" + monthOfBirth + "/"
-				+ yearOfbirth;
+				+ "\nDate of birth: " + getBirthday() + "/" + getMonthOfBirth() + "/"
+				+ getYearOfbirth();
 	}
 }
