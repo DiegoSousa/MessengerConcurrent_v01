@@ -17,16 +17,16 @@ import br.ufpb.threadControl.MessengerConcurrent.Entity.Product;
  * @version 2.0 Copyright (C) 2012 Diego Sousa de Azevedo
  */
 
-public class ProductBuyManager {
+public class ManagerPurchasesOfProducts {
 
-	private static ProductBuyManager buyManager;
-	private Map<Client, List<Product>> listOfAllBuy;
+	private static ManagerPurchasesOfProducts buyManager;
+	private Map<Client, List<Product>> listOfPurchaseOfAllCustomers;
 	private Logger logger;	
-	private ProductManager productManager;
+	private ManagerProduct productManager;
 
-	private ProductBuyManager() {		
-		productManager = ProductManager.getInstance();
-		this.listOfAllBuy = Collections
+	private ManagerPurchasesOfProducts() {		
+		productManager = ManagerProduct.getInstance();
+		this.listOfPurchaseOfAllCustomers = Collections
 				.synchronizedMap(new HashMap<Client, List<Product>>());
 		this.logger = Logger
 				.getLogger("br.ufpb.threadControl.MessageManager.Controller.ProductPreferredManager");
@@ -36,9 +36,9 @@ public class ProductBuyManager {
 	 * Singleton
 	 */
 
-	public static synchronized ProductBuyManager getInstance() {
+	public static synchronized ManagerPurchasesOfProducts getInstance() {
 		if (buyManager == null) {
-			buyManager = new ProductBuyManager();
+			buyManager = new ManagerPurchasesOfProducts();
 		}
 		return buyManager;
 	}
@@ -47,39 +47,39 @@ public class ProductBuyManager {
 			Product product, int quantityOfProductsToBuy) {
 		
 		if (client != null
-				&& listOfAllBuy.get(client) != null
+				&& listOfPurchaseOfAllCustomers.get(client) != null
 				&& product.getQuantity() >= quantityOfProductsToBuy) { /* if there is already a list*/
 			
-			List<Product> listAux = listOfAllBuy.get(client);
+			List<Product> listAux = listOfPurchaseOfAllCustomers.get(client);
 			listAux.add(product);
-			listOfAllBuy.put(client, listAux);
+			listOfPurchaseOfAllCustomers.put(client, listAux);
 			product.setQuantity(product.getQuantity() - quantityOfProductsToBuy);
 			productManager.editProduct(product);
 			logger.info("successfully performed buy");
-			return listOfAllBuy.get(client);
+			return listOfPurchaseOfAllCustomers.get(client);
 			
 		} else if (client != null
-				&& listOfAllBuy.get(client) == null) {/* if the list does not exist*/
+				&& listOfPurchaseOfAllCustomers.get(client) == null) {/* if the list does not exist*/
 			List<Product> listAux = new LinkedList<Product>();
 			listAux.add(product);
-			listOfAllBuy.put(client, listAux);
+			listOfPurchaseOfAllCustomers.put(client, listAux);
 			product.setQuantity(product.getQuantity() - quantityOfProductsToBuy);
 			productManager.editProduct(product);
-			return listOfAllBuy.get(client);
+			return listOfPurchaseOfAllCustomers.get(client);
 		}
 		return null;
 	}
 
-	public synchronized void removeHistoricBuyClient(Client client) {
-		listOfAllBuy.remove(client);
+	public synchronized void removeHistoricalOfProductsPurchasedOfCustomer(Client client) {
+		listOfPurchaseOfAllCustomers.remove(client);
 		logger.info("Client Buy: " + client.getName() + " removed successfully");
 	}
 
-	public synchronized List<Product> getHistoricBuyClient(Client client) {
-		return listOfAllBuy.get(client);
+	public synchronized List<Product> getHistoricalOfProductsPurchasedOfCustomers(Client client) {
+		return listOfPurchaseOfAllCustomers.get(client);
 	}
 
-	public synchronized Map<Client, List<Product>> getHistoricBuyAllCLient() {
-		return listOfAllBuy;
+	public synchronized Map<Client, List<Product>> getHistoricalOfProductsPurchasedOfAllCustomers() {
+		return listOfPurchaseOfAllCustomers;
 	}
 }

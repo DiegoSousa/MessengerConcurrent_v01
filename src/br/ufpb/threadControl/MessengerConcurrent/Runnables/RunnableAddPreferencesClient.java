@@ -1,27 +1,27 @@
 /**
  * 
  */
-package br.ufpb.threadControl.MessengerConcurrent.ConcurrentOperations;
+package br.ufpb.threadControl.MessengerConcurrent.Runnables;
 
 import br.ufpb.threadControl.MessengerConcurrent.Entity.Client;
 import br.ufpb.threadControl.MessengerConcurrent.Entity.Product;
-import br.ufpb.threadControl.MessengerConcurrent.Managers.ProductPreferencesManager;
+import br.ufpb.threadControl.MessengerConcurrent.Managers.ManagerProductPreferences;
 
 /**
- * Description of the class
+ * Runnable adder Preferences Client
  * 
  * @author Diego Sousa - www.diegosousa.com
  * @version 1.0 Copyright (C) 2012 Diego Sousa de Azevedo
  */
 
-public class ThreadAddPreferencesClient implements Runnable {
+public class RunnableAddPreferencesClient implements Runnable {
 
-	private ProductPreferencesManager productPreferredManager;
+	private ManagerProductPreferences productPreferredManager;
 	private Client client;
 	private Product product;
 
-	public ThreadAddPreferencesClient(
-			ProductPreferencesManager productPreferredManager, Client client, Product product) {
+	public RunnableAddPreferencesClient(
+			ManagerProductPreferences productPreferredManager, Client client, Product product) {
 		this.productPreferredManager = productPreferredManager;
 		this.client = client;
 		this.product = product;

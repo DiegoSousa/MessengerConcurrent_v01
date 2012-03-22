@@ -1,23 +1,23 @@
 /**
  * 
  */
-package br.ufpb.threadControl.MessengerConcurrent.ConcurrentOperations;
+package br.ufpb.threadControl.MessengerConcurrent.Runnables;
 
 import br.ufpb.threadControl.MessengerConcurrent.Entity.Client;
-import br.ufpb.threadControl.MessengerConcurrent.Managers.ClientManager;
+import br.ufpb.threadControl.MessengerConcurrent.Managers.ManagerClient;
 
 /**
- * Adder class of clients
+ * Runnable adder client
  * 
  * @author Diego Sousa - www.diegosousa.com
  * @version 1.0 Copyright (C) 2012 Diego Sousa de Azevedo
  */
 
-public class ThreadAddClient implements Runnable {
-	private ClientManager clientManager;
+public class RunnableAddClient implements Runnable {
+	private ManagerClient clientManager;
 	private Client client;
 
-	public ThreadAddClient(ClientManager manager, Client client) {
+	public RunnableAddClient(ManagerClient manager, Client client) {
 		this.clientManager = manager;
 		this.client = client;
 	}

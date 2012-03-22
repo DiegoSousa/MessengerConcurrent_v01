@@ -1,29 +1,29 @@
 /**
  * 
  */
-package br.ufpb.threadControl.MessengerConcurrent.ConcurrentOperations;
+package br.ufpb.threadControl.MessengerConcurrent.Runnables;
 
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import br.ufpb.threadControl.MessengerConcurrent.Entity.Client;
 import br.ufpb.threadControl.MessengerConcurrent.Entity.Product;
-import br.ufpb.threadControl.MessengerConcurrent.Managers.ProductPreferencesManager;
+import br.ufpb.threadControl.MessengerConcurrent.Managers.ManagerProductPreferences;
 
 /**
- * Description of the class
+ * Runnable Get List Of Preferred Products Of Customers.
  * 
  * @author Diego Sousa - www.diegosousa.com
  * @version 1.0 Copyright (C) 2012 Diego Sousa de Azevedo
  */
 
-public class ThreadGetListProductPreferencesClient implements Runnable {
+public class RunnableGetListOfPreferredProductsOfCustomers implements Runnable {
 
-	private ProductPreferencesManager productPreferredManager;
+	private ManagerProductPreferences productPreferredManager;
 	private BlockingQueue<List<Product>> listProductPreferred;
 	private Client client;
 
-	public ThreadGetListProductPreferencesClient(
-			ProductPreferencesManager productPreferredManager,
+	public RunnableGetListOfPreferredProductsOfCustomers(
+			ManagerProductPreferences productPreferredManager,
 			BlockingQueue<List<Product>> listProductPreferred, Client client) {
 		this.productPreferredManager = productPreferredManager;
 		this.listProductPreferred = listProductPreferred;
@@ -34,7 +34,7 @@ public class ThreadGetListProductPreferencesClient implements Runnable {
 	public void run() {
 		try {
 			listProductPreferred.put(productPreferredManager
-					.getListPreferenceCLient(this.client));
+					.getListOfPreferredProductsOfCustomers(this.client));
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}

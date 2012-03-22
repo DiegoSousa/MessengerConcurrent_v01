@@ -13,13 +13,13 @@ import br.ufpb.threadControl.MessengerConcurrent.Entity.Product;
  * @version 2.0 Copyright (C) 2012 Diego Sousa de Azevedo
  */
 
-public class ProductManager {
+public class ManagerProduct {
 
-	private static ProductManager productManager;
+	private static ManagerProduct productManager;
 	private BlockingQueue<Product> listProduct;
 	private Logger logger;
 
-	private ProductManager() {
+	private ManagerProduct() {
 		this.listProduct = new LinkedBlockingQueue<Product>();
 		this.logger = Logger
 				.getLogger("br.ufpb.threadControl.birthdayMessage.Model.ProductManager");
@@ -29,14 +29,14 @@ public class ProductManager {
 	 * Singleton
 	 */
 
-	public static synchronized ProductManager getInstance() {
+	public static synchronized ManagerProduct getInstance() {
 		if (productManager == null) {
-			productManager = new ProductManager();
+			productManager = new ManagerProduct();
 		}
 		return productManager;
 	}
 
-	public Product addProduct(Product product) {
+	public synchronized Product addProduct(Product product) {
 		if (product != null) {
 			try {
 				listProduct.put(product);
@@ -54,7 +54,7 @@ public class ProductManager {
 		}
 	}
 
-	public Product removeProduct(Product product) {
+	public synchronized Product removeProduct(Product product) {
 
 		if (product != null) {
 			listProduct.remove(product);
@@ -67,7 +67,7 @@ public class ProductManager {
 		}
 	}
 
-	public Product editProduct(Product product) {
+	public synchronized Product editProduct(Product product) {
 
 		for (Product productAux : listProduct) {
 			if (productAux.getCode() == product.getCode()) {
@@ -89,7 +89,7 @@ public class ProductManager {
 		return null;
 	}
 
-	public Product searchProduct(double code) {
+	public synchronized Product searchProduct(double code) {
 
 		for (Product product : listProduct) {
 			if (product.getCode() == code) {

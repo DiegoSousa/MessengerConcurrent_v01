@@ -1,26 +1,26 @@
 /**
  * 
  */
-package br.ufpb.threadControl.MessengerConcurrent.ConcurrentOperations;
+package br.ufpb.threadControl.MessengerConcurrent.Runnables;
 
 import java.util.concurrent.BlockingQueue;
 
 import br.ufpb.threadControl.MessengerConcurrent.Entity.Client;
-import br.ufpb.threadControl.MessengerConcurrent.Managers.ClientManager;
+import br.ufpb.threadControl.MessengerConcurrent.Managers.ManagerClient;
 
 /**
- * Description of the class
+ * Runnable Search Client
  * 
  * @author Diego Sousa - www.diegosousa.com
  * @version 1.0 Copyright (C) 2012 Diego Sousa de Azevedo
  */
 
-public class ThreadSearchClient implements Runnable {
-	private ClientManager clientManager;
+public class RunnableSearchClient implements Runnable {
+	private ManagerClient clientManager;
 	private String nome;
 	private BlockingQueue<Client> list;
 
-	public ThreadSearchClient(ClientManager manager, String nome,
+	public RunnableSearchClient(ManagerClient manager, String nome,
 			BlockingQueue<Client> list) {
 		this.clientManager = manager;
 		this.nome = nome;

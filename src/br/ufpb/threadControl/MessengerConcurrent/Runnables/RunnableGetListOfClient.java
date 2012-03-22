@@ -1,21 +1,21 @@
-package br.ufpb.threadControl.MessengerConcurrent.ConcurrentOperations;
+package br.ufpb.threadControl.MessengerConcurrent.Runnables;
 
 import java.util.concurrent.BlockingQueue;
 import br.ufpb.threadControl.MessengerConcurrent.Entity.Client;
-import br.ufpb.threadControl.MessengerConcurrent.Managers.ClientManager;
+import br.ufpb.threadControl.MessengerConcurrent.Managers.ManagerClient;
 
 /**
- * Description of the class
+ * Runnable Get List Of Client.
  * 
  * @author Diego Sousa - www.diegosousa.com
  * @version 1.0 Copyright (C) 2012 Diego Sousa de Azevedo
  */
 
-public class ThreadGetListOfClient implements Runnable {
-	private ClientManager clientManager;
+public class RunnableGetListOfClient implements Runnable {
+	private ManagerClient clientManager;
 	private BlockingQueue<BlockingQueue<Client>> list;
 
-	public ThreadGetListOfClient(ClientManager manager,
+	public RunnableGetListOfClient(ManagerClient manager,
 			BlockingQueue<BlockingQueue<Client>> listClient) {
 		this.clientManager = manager;
 		this.list = listClient;

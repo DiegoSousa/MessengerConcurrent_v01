@@ -17,13 +17,13 @@ import br.ufpb.threadControl.MessengerConcurrent.Entity.Product;
  * @version 2.0 Copyright (C) 2012 Diego Sousa de Azevedo
  */
 
-public class ProductPreferencesManager {
+public class ManagerProductPreferences {
 
-	private static ProductPreferencesManager productPreferencesManager;
+	private static ManagerProductPreferences productPreferencesManager;
 	private Map<Client, List<Product>> listOfAllPreferences;
 	private Logger logger;
 
-	private ProductPreferencesManager() {
+	private ManagerProductPreferences() {
 		this.listOfAllPreferences = Collections
 				.synchronizedMap(new HashMap<Client, List<Product>>());
 		this.logger = Logger
@@ -34,9 +34,9 @@ public class ProductPreferencesManager {
 	 * Singleton
 	 */
 
-	public static synchronized ProductPreferencesManager getInstance() {
+	public static synchronized ManagerProductPreferences getInstance() {
 		if (productPreferencesManager == null) {
-			productPreferencesManager = new ProductPreferencesManager();
+			productPreferencesManager = new ManagerProductPreferences();
 		}
 		return productPreferencesManager;
 	}
@@ -70,11 +70,11 @@ public class ProductPreferencesManager {
 				+ " removed successfully");
 	}
 
-	public synchronized List<Product> getListPreferenceCLient(Client client) {
+	public synchronized List<Product> getListOfPreferredProductsOfCustomers(Client client) {
 		return listOfAllPreferences.get(client);
 	}
 
-	public synchronized Map<Client, List<Product>> getListPreferenceAllCLient() {
+	public synchronized Map<Client, List<Product>> getListOfPreferredProductsOfAllCustomers() {
 		return listOfAllPreferences;
 	}
 }

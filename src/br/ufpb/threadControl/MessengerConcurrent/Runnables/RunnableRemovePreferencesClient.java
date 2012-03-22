@@ -1,25 +1,25 @@
 /**
  * 
  */
-package br.ufpb.threadControl.MessengerConcurrent.ConcurrentOperations;
+package br.ufpb.threadControl.MessengerConcurrent.Runnables;
 
 import br.ufpb.threadControl.MessengerConcurrent.Entity.Client;
-import br.ufpb.threadControl.MessengerConcurrent.Managers.ProductPreferencesManager;
+import br.ufpb.threadControl.MessengerConcurrent.Managers.ManagerProductPreferences;
 
 /**
- * Description of the class
+ * Runnable Remove Preferences Client.
  * 
  * @author Diego Sousa - www.diegosousa.com
  * @version 1.0 Copyright (C) 2012 Diego Sousa de Azevedo
  */
 
-public class ThreadRemovePreferencesClient implements Runnable {
+public class RunnableRemovePreferencesClient implements Runnable {
 
-	private ProductPreferencesManager productPreferredManager;
+	private ManagerProductPreferences productPreferredManager;
 	private Client client;
 
-	public ThreadRemovePreferencesClient(
-			ProductPreferencesManager productPreferredManager, Client client) {
+	public RunnableRemovePreferencesClient(
+			ManagerProductPreferences productPreferredManager, Client client) {
 		this.productPreferredManager = productPreferredManager;
 		this.client = client;
 	}

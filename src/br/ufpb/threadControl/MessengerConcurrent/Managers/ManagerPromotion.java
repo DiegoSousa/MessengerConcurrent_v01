@@ -14,13 +14,13 @@ import java.util.logging.Logger;
 import br.ufpb.threadControl.MessengerConcurrent.Entity.Product;
 import br.ufpb.threadControl.MessengerConcurrent.Entity.Promotion;
 
-public class PromotionManager {
+public class ManagerPromotion {
 
-	private static PromotionManager promotionManager;
+	private static ManagerPromotion promotionManager;
 	private BlockingQueue<Promotion> listPromotion;
 	private Logger logger;
 
-	private PromotionManager() {
+	private ManagerPromotion() {
 		this.listPromotion = new LinkedBlockingQueue<Promotion>();
 		this.logger = Logger
 				.getLogger("br.ufpb.threadControl.MessageManager.Model.PromotionManager");
@@ -30,14 +30,14 @@ public class PromotionManager {
 	 * Singleton
 	 */
 
-	public static synchronized PromotionManager getInstance() {
+	public static synchronized ManagerPromotion getInstance() {
 		if (promotionManager == null) {
-			promotionManager = new PromotionManager();
+			promotionManager = new ManagerPromotion();
 		}
 		return promotionManager;
 	}
 
-	public Promotion addPromotion(Promotion promotion) {
+	public synchronized Promotion addPromotion(Promotion promotion) {
 		if (promotion != null) {
 			try {
 				listPromotion.put(promotion);
@@ -52,7 +52,7 @@ public class PromotionManager {
 		}
 	}
 
-	public Promotion removePromotion(Promotion promotion) {
+	public synchronized Promotion removePromotion(Promotion promotion) {
 		if (promotion != null) {
 			for (Promotion promotionAux : listPromotion) {
 				if (promotionAux.getPromotionCode() == promotion
@@ -68,7 +68,7 @@ public class PromotionManager {
 		return null;
 	}
 
-	public Promotion editPromotion(Promotion promotion) {
+	public synchronized Promotion editPromotion(Promotion promotion) {
 
 		Promotion promotionAux = searchPromotion(promotion.getPromotionCode());
 
@@ -83,7 +83,7 @@ public class PromotionManager {
 		}
 	}
 
-	public Promotion searchPromotion(double promotionCode) {
+	public synchronized Promotion searchPromotion(double promotionCode) {
 
 		for (Promotion promotion : listPromotion) {
 			if (promotion.getPromotionCode() == promotionCode) {
@@ -94,7 +94,7 @@ public class PromotionManager {
 		return null;
 	}
 
-	public Promotion searchPromotion(Product product) {
+	public synchronized Promotion searchPromotion(Product product) {
 
 		for (Promotion promotion : listPromotion) {
 			if (promotion.getProduct() == product) {

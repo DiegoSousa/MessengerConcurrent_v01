@@ -13,17 +13,17 @@ import br.ufpb.threadControl.MessengerConcurrent.Entity.Client;
  * @version 2.0 Copyright (C) 2012 Diego Sousa de Azevedo
  */
 
-public class ClientManager {
+public class ManagerClient {
 
-	private static ClientManager clientManager;
-	private ProductPreferencesManager productPreferencesManager;
-	private ProductBuyManager productBuyManager;
+	private static ManagerClient clientManager;
+	private ManagerProductPreferences productPreferencesManager;
+	private ManagerPurchasesOfProducts productBuyManager;
 	private BlockingQueue<Client> listClient;
 	private Logger logger;
 	
-	private ClientManager() {
-		this.productPreferencesManager = ProductPreferencesManager.getInstance();
-		this.productBuyManager = ProductBuyManager.getInstance();
+	private ManagerClient() {
+		this.productPreferencesManager = ManagerProductPreferences.getInstance();
+		this.productBuyManager = ManagerPurchasesOfProducts.getInstance();
 		this.listClient = new LinkedBlockingQueue<Client>();
 		this.logger = Logger
 				.getLogger("br.ufpb.threadControl.birthdayMessage.Model.ClientManager");		
@@ -33,14 +33,14 @@ public class ClientManager {
 	 * Singleton
 	 */
 
-	public static synchronized ClientManager getInstance() {
+	public static synchronized ManagerClient getInstance() {
 		if (clientManager == null) {
-			clientManager = new ClientManager();
+			clientManager = new ManagerClient();
 		}
 		return clientManager;
 	}
 
-	public Client addClient(Client client) {
+	public synchronized Client addClient(Client client) {
 		if (client != null) {
 			try {
 				listClient.put(client);
@@ -57,12 +57,12 @@ public class ClientManager {
 		}
 	}
 
-	public Client removeClient(Client client) {
+	public synchronized Client removeClient(Client client) {
 
 		if (client != null) {
 			listClient.remove(client);
 			productPreferencesManager.removeAllPreferencesClient(client);
-			productBuyManager.removeHistoricBuyClient(client);
+			productBuyManager.removeHistoricalOfProductsPurchasedOfCustomer(client);
 			logger.info(client.getMail() + " successfully removed!");
 			return client;
 		} else {
@@ -70,7 +70,7 @@ public class ClientManager {
 		}
 	}
 
-	public Client editClient(Client client) {
+	public synchronized  Client editClient(Client client) {
 		if (client != null) {
 			for (Client clientAux : listClient) {
 
@@ -91,7 +91,7 @@ public class ClientManager {
 		return null;
 	}
 
-	public Client searchClient(String nome) {
+	public synchronized Client searchClient(String nome) {
 
 		for (Client client : listClient) {
 			if (client.getName().equals(nome)) {

@@ -1,23 +1,23 @@
 /**
  * 
  */
-package br.ufpb.threadControl.MessengerConcurrent.ConcurrentOperations;
+package br.ufpb.threadControl.MessengerConcurrent.Runnables;
 
 import br.ufpb.threadControl.MessengerConcurrent.Entity.Client;
-import br.ufpb.threadControl.MessengerConcurrent.Managers.ClientManager;
+import br.ufpb.threadControl.MessengerConcurrent.Managers.ManagerClient;
 
 /**
- * Description of the class
+ * Runnable Remove Client
  * 
  * @author Diego Sousa - www.diegosousa.com
  * @version 1.0 Copyright (C) 2012 Diego Sousa de Azevedo
  */
 
-public class ThreadRemoveClient implements Runnable {
-	private ClientManager clientManager;	
+public class RunnableRemoveClient implements Runnable {
+	private ManagerClient clientManager;	
 	Client client;
 
-	public ThreadRemoveClient(ClientManager manager, Client client) {
+	public RunnableRemoveClient(ManagerClient manager, Client client) {
 		this.clientManager = manager;
 		this.client = client;
 	}

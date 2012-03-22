@@ -1,7 +1,7 @@
 /**
  * 
  */
-package br.ufpb.threadControl.MessengerConcurrent.ConcurrentOperations;
+package br.ufpb.threadControl.MessengerConcurrent.Runnables;
 
 import java.util.List;
 import java.util.Map;
@@ -9,30 +9,30 @@ import java.util.concurrent.BlockingQueue;
 
 import br.ufpb.threadControl.MessengerConcurrent.Entity.Client;
 import br.ufpb.threadControl.MessengerConcurrent.Entity.Product;
-import br.ufpb.threadControl.MessengerConcurrent.Managers.ProductBuyManager;
+import br.ufpb.threadControl.MessengerConcurrent.Managers.ManagerPurchasesOfProducts;
 
 /**
- * Description of the class
+ * Runnable Get Historical Of Products Purchased Of All Customers.
  * 
  * @author Diego Sousa - www.diegosousa.com
  * @version 1.0 Copyright (C) 2012 Diego Sousa de Azevedo
  */
 
-public class ThreadGetHistoricProductsBuyAllClient implements Runnable {
+public class RunnableGetHistoricalOfProductsPurchasedOfAllCustomers implements Runnable {
 
-	private ProductBuyManager productBuyManager;
+	private ManagerPurchasesOfProducts managerPurchasesOfProducts;
 	private BlockingQueue<Map<Client, List<Product>>> list;	
 
-	public ThreadGetHistoricProductsBuyAllClient(
+	public RunnableGetHistoricalOfProductsPurchasedOfAllCustomers(
 			BlockingQueue<Map<Client, List<Product>>> list) {
-		this.productBuyManager = ProductBuyManager.getInstance();
+		this.managerPurchasesOfProducts = ManagerPurchasesOfProducts.getInstance();
 		this.list = list;
 	}
 
 	@Override
 	public void run() {
 		try {
-			list.put(productBuyManager.getHistoricBuyAllCLient());
+			list.put(managerPurchasesOfProducts.getHistoricalOfProductsPurchasedOfAllCustomers());
 		} catch (InterruptedException e) {
 			e.getMessage();
 		}

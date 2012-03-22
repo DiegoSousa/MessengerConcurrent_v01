@@ -1,23 +1,23 @@
 /**
  * 
  */
-package br.ufpb.threadControl.MessengerConcurrent.ConcurrentOperations;
+package br.ufpb.threadControl.MessengerConcurrent.Runnables;
 
 import br.ufpb.threadControl.MessengerConcurrent.Entity.Promotion;
-import br.ufpb.threadControl.MessengerConcurrent.Managers.PromotionManager;
+import br.ufpb.threadControl.MessengerConcurrent.Managers.ManagerPromotion;
 
 /**
- * Description of the class
+ * Runnable adder Promotion
  * 
  * @author Diego Sousa - www.diegosousa.com
  * @version 1.0 Copyright (C) 2012 Diego Sousa de Azevedo
  */
 
-public class ThreadAddPromotion implements Runnable {
-	private PromotionManager promotionManager;
+public class RunnableAddPromotion implements Runnable {
+	private ManagerPromotion promotionManager;
 	private Promotion promotion;
 
-	public ThreadAddPromotion(PromotionManager manager, Promotion promotion) {
+	public RunnableAddPromotion(ManagerPromotion manager, Promotion promotion) {
 		this.promotionManager = manager;
 		this.promotion = promotion;
 	}
