@@ -76,7 +76,7 @@ public class Facade{
 		return executor;
 	}
 
-	// -------------------------------------------------------------------------
+	// ------------------------------------------------------------------
 	// methods concurrent CRUD Clients
 
 	public void addClient(Client client) {
