@@ -61,7 +61,7 @@ public class Facade{
 	}
 
 	/*
-	 * Singleton facade.
+	 * Singleton facade. 
 	 */
 
 	public static synchronized Facade getInstance() {
